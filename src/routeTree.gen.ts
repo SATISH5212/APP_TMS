@@ -15,19 +15,19 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as UsersImport } from './routes/users'
 import { Route as UpdatepasswordImport } from './routes/updatepassword'
+import { Route as SinginupdatepassswordImport } from './routes/singinupdatepasssword'
 import { Route as SignUpImport } from './routes/signUp'
 import { Route as SignInImport } from './routes/signIn'
-import { Route as GetspecificuserImport } from './routes/getspecificuser'
 import { Route as GetStatsImport } from './routes/getStats'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as CreateticketImport } from './routes/createticket'
-import { Route as AgentsImport } from './routes/agents'
 import { Route as UpdateticketTicketIdImport } from './routes/updateticket/$ticket-id'
 import { Route as PostsIdImport } from './routes/posts/$id'
+import { Route as GetsingleticketTicketIdImport } from './routes/getsingleticket/$ticket-id'
+import { Route as GetfilesTicketIdImport } from './routes/getfiles/$ticket-id'
 import { Route as GetallcommentsTicketIdImport } from './routes/getallcomments/$ticket-id'
 import { Route as FileuploadTicketIdImport } from './routes/fileupload/$ticket-id'
 import { Route as AssignticketsTicketIdImport } from './routes/assigntickets/$ticket-id'
-import { Route as UpdateticketIdImport } from './routes/update/${ticket.id}'
 
 // Create Virtual Routes
 
@@ -47,6 +47,12 @@ const UpdatepasswordRoute = UpdatepasswordImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SinginupdatepassswordRoute = SinginupdatepassswordImport.update({
+  id: '/singinupdatepasssword',
+  path: '/singinupdatepasssword',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const SignUpRoute = SignUpImport.update({
   id: '/signUp',
   path: '/signUp',
@@ -56,12 +62,6 @@ const SignUpRoute = SignUpImport.update({
 const SignInRoute = SignInImport.update({
   id: '/signIn',
   path: '/signIn',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const GetspecificuserRoute = GetspecificuserImport.update({
-  id: '/getspecificuser',
-  path: '/getspecificuser',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -83,12 +83,6 @@ const CreateticketRoute = CreateticketImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AgentsRoute = AgentsImport.update({
-  id: '/agents',
-  path: '/agents',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
@@ -104,6 +98,18 @@ const UpdateticketTicketIdRoute = UpdateticketTicketIdImport.update({
 const PostsIdRoute = PostsIdImport.update({
   id: '/posts/$id',
   path: '/posts/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GetsingleticketTicketIdRoute = GetsingleticketTicketIdImport.update({
+  id: '/getsingleticket/$ticket-id',
+  path: '/getsingleticket/$ticket-id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GetfilesTicketIdRoute = GetfilesTicketIdImport.update({
+  id: '/getfiles/$ticket-id',
+  path: '/getfiles/$ticket-id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -125,12 +131,6 @@ const AssignticketsTicketIdRoute = AssignticketsTicketIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const UpdateticketIdRoute = UpdateticketIdImport.update({
-  id: '/update/${ticket/id}',
-  path: '/update/${ticket/id}',
-  getParentRoute: () => rootRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -140,13 +140,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/agents': {
-      id: '/agents'
-      path: '/agents'
-      fullPath: '/agents'
-      preLoaderRoute: typeof AgentsImport
       parentRoute: typeof rootRoute
     }
     '/createticket': {
@@ -170,13 +163,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GetStatsImport
       parentRoute: typeof rootRoute
     }
-    '/getspecificuser': {
-      id: '/getspecificuser'
-      path: '/getspecificuser'
-      fullPath: '/getspecificuser'
-      preLoaderRoute: typeof GetspecificuserImport
-      parentRoute: typeof rootRoute
-    }
     '/signIn': {
       id: '/signIn'
       path: '/signIn'
@@ -189,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/signUp'
       fullPath: '/signUp'
       preLoaderRoute: typeof SignUpImport
+      parentRoute: typeof rootRoute
+    }
+    '/singinupdatepasssword': {
+      id: '/singinupdatepasssword'
+      path: '/singinupdatepasssword'
+      fullPath: '/singinupdatepasssword'
+      preLoaderRoute: typeof SinginupdatepassswordImport
       parentRoute: typeof rootRoute
     }
     '/updatepassword': {
@@ -226,6 +219,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GetallcommentsTicketIdImport
       parentRoute: typeof rootRoute
     }
+    '/getfiles/$ticket-id': {
+      id: '/getfiles/$ticket-id'
+      path: '/getfiles/$ticket-id'
+      fullPath: '/getfiles/$ticket-id'
+      preLoaderRoute: typeof GetfilesTicketIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/getsingleticket/$ticket-id': {
+      id: '/getsingleticket/$ticket-id'
+      path: '/getsingleticket/$ticket-id'
+      fullPath: '/getsingleticket/$ticket-id'
+      preLoaderRoute: typeof GetsingleticketTicketIdImport
+      parentRoute: typeof rootRoute
+    }
     '/posts/$id': {
       id: '/posts/$id'
       path: '/posts/$id'
@@ -240,13 +247,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UpdateticketTicketIdImport
       parentRoute: typeof rootRoute
     }
-    '/update/${ticket/id}': {
-      id: '/update/${ticket/id}'
-      path: '/update/${ticket/id}'
-      fullPath: '/update/${ticket/id}'
-      preLoaderRoute: typeof UpdateticketIdImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -254,156 +254,156 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/agents': typeof AgentsRoute
   '/createticket': typeof CreateticketRoute
   '/dashboard': typeof DashboardRoute
   '/getStats': typeof GetStatsRoute
-  '/getspecificuser': typeof GetspecificuserRoute
   '/signIn': typeof SignInRoute
   '/signUp': typeof SignUpRoute
+  '/singinupdatepasssword': typeof SinginupdatepassswordRoute
   '/updatepassword': typeof UpdatepasswordRoute
   '/users': typeof UsersRoute
   '/assigntickets/$ticket-id': typeof AssignticketsTicketIdRoute
   '/fileupload/$ticket-id': typeof FileuploadTicketIdRoute
   '/getallcomments/$ticket-id': typeof GetallcommentsTicketIdRoute
+  '/getfiles/$ticket-id': typeof GetfilesTicketIdRoute
+  '/getsingleticket/$ticket-id': typeof GetsingleticketTicketIdRoute
   '/posts/$id': typeof PostsIdRoute
   '/updateticket/$ticket-id': typeof UpdateticketTicketIdRoute
-  '/update/${ticket/id}': typeof UpdateticketIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/agents': typeof AgentsRoute
   '/createticket': typeof CreateticketRoute
   '/dashboard': typeof DashboardRoute
   '/getStats': typeof GetStatsRoute
-  '/getspecificuser': typeof GetspecificuserRoute
   '/signIn': typeof SignInRoute
   '/signUp': typeof SignUpRoute
+  '/singinupdatepasssword': typeof SinginupdatepassswordRoute
   '/updatepassword': typeof UpdatepasswordRoute
   '/users': typeof UsersRoute
   '/assigntickets/$ticket-id': typeof AssignticketsTicketIdRoute
   '/fileupload/$ticket-id': typeof FileuploadTicketIdRoute
   '/getallcomments/$ticket-id': typeof GetallcommentsTicketIdRoute
+  '/getfiles/$ticket-id': typeof GetfilesTicketIdRoute
+  '/getsingleticket/$ticket-id': typeof GetsingleticketTicketIdRoute
   '/posts/$id': typeof PostsIdRoute
   '/updateticket/$ticket-id': typeof UpdateticketTicketIdRoute
-  '/update/${ticket/id}': typeof UpdateticketIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/agents': typeof AgentsRoute
   '/createticket': typeof CreateticketRoute
   '/dashboard': typeof DashboardRoute
   '/getStats': typeof GetStatsRoute
-  '/getspecificuser': typeof GetspecificuserRoute
   '/signIn': typeof SignInRoute
   '/signUp': typeof SignUpRoute
+  '/singinupdatepasssword': typeof SinginupdatepassswordRoute
   '/updatepassword': typeof UpdatepasswordRoute
   '/users': typeof UsersRoute
   '/assigntickets/$ticket-id': typeof AssignticketsTicketIdRoute
   '/fileupload/$ticket-id': typeof FileuploadTicketIdRoute
   '/getallcomments/$ticket-id': typeof GetallcommentsTicketIdRoute
+  '/getfiles/$ticket-id': typeof GetfilesTicketIdRoute
+  '/getsingleticket/$ticket-id': typeof GetsingleticketTicketIdRoute
   '/posts/$id': typeof PostsIdRoute
   '/updateticket/$ticket-id': typeof UpdateticketTicketIdRoute
-  '/update/${ticket/id}': typeof UpdateticketIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/agents'
     | '/createticket'
     | '/dashboard'
     | '/getStats'
-    | '/getspecificuser'
     | '/signIn'
     | '/signUp'
+    | '/singinupdatepasssword'
     | '/updatepassword'
     | '/users'
     | '/assigntickets/$ticket-id'
     | '/fileupload/$ticket-id'
     | '/getallcomments/$ticket-id'
+    | '/getfiles/$ticket-id'
+    | '/getsingleticket/$ticket-id'
     | '/posts/$id'
     | '/updateticket/$ticket-id'
-    | '/update/${ticket/id}'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/agents'
     | '/createticket'
     | '/dashboard'
     | '/getStats'
-    | '/getspecificuser'
     | '/signIn'
     | '/signUp'
+    | '/singinupdatepasssword'
     | '/updatepassword'
     | '/users'
     | '/assigntickets/$ticket-id'
     | '/fileupload/$ticket-id'
     | '/getallcomments/$ticket-id'
+    | '/getfiles/$ticket-id'
+    | '/getsingleticket/$ticket-id'
     | '/posts/$id'
     | '/updateticket/$ticket-id'
-    | '/update/${ticket/id}'
   id:
     | '__root__'
     | '/'
-    | '/agents'
     | '/createticket'
     | '/dashboard'
     | '/getStats'
-    | '/getspecificuser'
     | '/signIn'
     | '/signUp'
+    | '/singinupdatepasssword'
     | '/updatepassword'
     | '/users'
     | '/assigntickets/$ticket-id'
     | '/fileupload/$ticket-id'
     | '/getallcomments/$ticket-id'
+    | '/getfiles/$ticket-id'
+    | '/getsingleticket/$ticket-id'
     | '/posts/$id'
     | '/updateticket/$ticket-id'
-    | '/update/${ticket/id}'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  AgentsRoute: typeof AgentsRoute
   CreateticketRoute: typeof CreateticketRoute
   DashboardRoute: typeof DashboardRoute
   GetStatsRoute: typeof GetStatsRoute
-  GetspecificuserRoute: typeof GetspecificuserRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
+  SinginupdatepassswordRoute: typeof SinginupdatepassswordRoute
   UpdatepasswordRoute: typeof UpdatepasswordRoute
   UsersRoute: typeof UsersRoute
   AssignticketsTicketIdRoute: typeof AssignticketsTicketIdRoute
   FileuploadTicketIdRoute: typeof FileuploadTicketIdRoute
   GetallcommentsTicketIdRoute: typeof GetallcommentsTicketIdRoute
+  GetfilesTicketIdRoute: typeof GetfilesTicketIdRoute
+  GetsingleticketTicketIdRoute: typeof GetsingleticketTicketIdRoute
   PostsIdRoute: typeof PostsIdRoute
   UpdateticketTicketIdRoute: typeof UpdateticketTicketIdRoute
-  UpdateticketIdRoute: typeof UpdateticketIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  AgentsRoute: AgentsRoute,
   CreateticketRoute: CreateticketRoute,
   DashboardRoute: DashboardRoute,
   GetStatsRoute: GetStatsRoute,
-  GetspecificuserRoute: GetspecificuserRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
+  SinginupdatepassswordRoute: SinginupdatepassswordRoute,
   UpdatepasswordRoute: UpdatepasswordRoute,
   UsersRoute: UsersRoute,
   AssignticketsTicketIdRoute: AssignticketsTicketIdRoute,
   FileuploadTicketIdRoute: FileuploadTicketIdRoute,
   GetallcommentsTicketIdRoute: GetallcommentsTicketIdRoute,
+  GetfilesTicketIdRoute: GetfilesTicketIdRoute,
+  GetsingleticketTicketIdRoute: GetsingleticketTicketIdRoute,
   PostsIdRoute: PostsIdRoute,
   UpdateticketTicketIdRoute: UpdateticketTicketIdRoute,
-  UpdateticketIdRoute: UpdateticketIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -417,28 +417,25 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
-        "/agents",
         "/createticket",
         "/dashboard",
         "/getStats",
-        "/getspecificuser",
         "/signIn",
         "/signUp",
+        "/singinupdatepasssword",
         "/updatepassword",
         "/users",
         "/assigntickets/$ticket-id",
         "/fileupload/$ticket-id",
         "/getallcomments/$ticket-id",
+        "/getfiles/$ticket-id",
+        "/getsingleticket/$ticket-id",
         "/posts/$id",
-        "/updateticket/$ticket-id",
-        "/update/${ticket/id}"
+        "/updateticket/$ticket-id"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
-    },
-    "/agents": {
-      "filePath": "agents.tsx"
     },
     "/createticket": {
       "filePath": "createticket.tsx"
@@ -449,14 +446,14 @@ export const routeTree = rootRoute
     "/getStats": {
       "filePath": "getStats.tsx"
     },
-    "/getspecificuser": {
-      "filePath": "getspecificuser.tsx"
-    },
     "/signIn": {
       "filePath": "signIn.tsx"
     },
     "/signUp": {
       "filePath": "signUp.tsx"
+    },
+    "/singinupdatepasssword": {
+      "filePath": "singinupdatepasssword.tsx"
     },
     "/updatepassword": {
       "filePath": "updatepassword.tsx"
@@ -473,14 +470,17 @@ export const routeTree = rootRoute
     "/getallcomments/$ticket-id": {
       "filePath": "getallcomments/$ticket-id.tsx"
     },
+    "/getfiles/$ticket-id": {
+      "filePath": "getfiles/$ticket-id.tsx"
+    },
+    "/getsingleticket/$ticket-id": {
+      "filePath": "getsingleticket/$ticket-id.tsx"
+    },
     "/posts/$id": {
       "filePath": "posts/$id.tsx"
     },
     "/updateticket/$ticket-id": {
       "filePath": "updateticket/$ticket-id.tsx"
-    },
-    "/update/${ticket/id}": {
-      "filePath": "update/${ticket.id}.tsx"
     }
   }
 }

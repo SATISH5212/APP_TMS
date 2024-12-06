@@ -2,10 +2,10 @@
 
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useNavigate } from '@tanstack/react-router';
+
 import { keepPreviousData, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-
+import { useNavigate } from '@tanstack/react-router';
 export const Route = createFileRoute('/users')({
   component: RouteComponent,
 });
@@ -14,7 +14,7 @@ function RouteComponent() {
   const [cpage, setCpage] = useState(1);
   const [totalPages, setTpages] = useState(1);
   const limit = 20;
-
+  const queryClient = useQueryClient();
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   if (!token) {
@@ -38,17 +38,18 @@ function RouteComponent() {
       throw new Error("Failed to fetch the tickets data");
     }
     const data = await res.json();
+    console.log(data)
     setTpages(data.pagination_details.total_pages);
     return data;
   };
 
-  const queryClient = useQueryClient();
+ 
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['tickets', cpage],
     queryFn: () => fetchTickets(cpage),
     placeholderData: keepPreviousData,
-  });
+  })
 
   const deleteTicket = async (ticketId) => {
     const res = await fetch(
@@ -119,7 +120,7 @@ function RouteComponent() {
               {data.data.map((ticket) => (
                 <tr key={ticket.id}>
                 
-                  <td>{ticket.id}</td>
+                  <td>{ticket.ticket_ref}</td>
                    {/* <td>{ticket.ticket_ref_id}</td> */}
                   <td>{ticket.title}</td>
                   <td>{ticket.description}</td>
@@ -140,7 +141,10 @@ function RouteComponent() {
                   <td>{/* <td><Link to={`/getallcomments/${ticket.id}`}>Comments</Link></td> */}
                   <Link to={`/getallcomments/${ticket.id}`} state={{ requestedBy:ticket.requested_by}}>    Comments  </Link>
                   </td>
-                  <td><td><Link to={"/assigntickets/"+ticket.id}>Assign</Link></td></td>
+                  <td><Link to={"/assigntickets/"+ticket.id}>Assign</Link></td>
+                  <td><Link to={"/fileupload/"+ticket.id}>fileupload</Link></td>
+                  <td><Link to={"/getfiles/"+ticket.id}>Get all files</Link></td>
+                  <td><Link to={"/getsingleticket/"+ticket.id}><button>open</button></Link></td>
                 </tr>
               ))}
             </tbody>

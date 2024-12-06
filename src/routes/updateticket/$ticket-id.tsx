@@ -1,5 +1,3 @@
-
-//@ts-nocheck
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useEffect, useCallback } from 'react';
@@ -134,4 +132,3 @@ function RouteComponent() {
 }
 
 export default React.memo(RouteComponent);
-

@@ -22,10 +22,10 @@ export const Route = createRootRoute({
          Create ticket
         </Link>{' '}
         <Link to="/users" className="[&.active]:font-bold">
-        users table
+       tickets table
         </Link>{' '}
-        <Link to="/getspecificuser" className="[&.active]:font-bold">
-        specific user
+        <Link to="/getsingleticket/$ticket-id" className="[&.active]:font-bold">
+        specific user tikeet
         </Link>{' '}
                
         <Link to="/getStats" className="[&.active]:font-bold">
@@ -38,6 +38,9 @@ export const Route = createRootRoute({
         
         <Link to="/assigntickets/$ticket" className="[&.active]:font-bold">
         assign agents
+        </Link>{' '}
+        <Link to="/singinupdatepasssword" className="[&.active]:font-bold">
+       +++++++
         </Link>{' '}
       </div>
       <hr />

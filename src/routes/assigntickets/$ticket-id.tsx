@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 
 import { createFileRoute, useParams } from '@tanstack/react-router'
 
@@ -35,6 +35,7 @@ function RouteComponent() {
       throw new Error('failed to fetch comments data')
     }
     return await res.json()
+   
     
   }
 
@@ -42,6 +43,7 @@ function RouteComponent() {
     queryKey: ['Agents', ticketId],
     queryFn: fetchAgents,
   })
+  console.log(data)
 const handleAssign=useMutation({
   mutationFn:async(agentId)=>{
     const res=await fetch(
@@ -105,7 +107,7 @@ const handleAssign=useMutation({
                 <h3 style={{textAlign:"center"}}>{agent.full_name}</h3>
                 <p>
                   <strong>Id:</strong>
-                  {agent.id} acres
+                  {agent.id}
                 </p>
                 <p>
                   <strong>Email:</strong>{agent.email}

@@ -1,11 +1,9 @@
-//@ts-nocheck
 
-import * as React from 'react'
 import { createFileRoute, useParams } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-// import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query'
-// import { useLocation } from '@tanstack/react-router'
+
+import { useMutation } from '@tanstack/react-query'
+
 export const Route = createFileRoute('/fileupload/$ticket-id')({
   component: RouteComponent,    
 })
@@ -13,65 +11,81 @@ export const Route = createFileRoute('/fileupload/$ticket-id')({
 
 function RouteComponent() {
 
-const[file,setFile]=useState(null)
-const[status,setStatus]=useState("")
+const[file,setFile]=useState<File | null>(null)
 
 const {'ticket-id':ticketId}=Route.useParams()
- 
-//  const location=useLocation();
-// const queryClient=useQueryClient() 
-const token = localStorage.getItem('accessToken')
-// const loginusrid=localStorage.getItem('userId')
-// console.log(loginusrid)
-  const navigate = useNavigate()
-  if (!token) {
-    alert(
-      'no access token found in the localstorage. so please login to view the tickets data',
-    )
-
-    navigate({ to: '/signIn' })
-  }
+const {mutate}=useMutation({
+mutationFn:async()=>{
   
+  if(!file) return
+  const file_name = file.name;
+  const file_type = file.type;
+  const file_size =  Math.ceil(file?.size / 1024); 
+  console.log(file_name,file_type,file_size)
 
- 
-  const handleSubmit=async(event)=>{
-       event.preventDefault();
-      setStatus("")
-      const formData=new FormData();
-    formData.append("file",file);
-    
-             const res=await fetch(
-        `https://api-ticketmanagement.onrender.com/v1.0/tickets/${ticketId}/attachment`,formData,
+      const res=await fetch(
+        `https://api-ticketmanagement.onrender.com/v1.0/tickets/${ticketId}/attachment`,
         {
-             method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "form-data",
-            Authorization: `Bearer ${token}`,
-          },
-            }
-      );
-      setStatus(res.status===200?"file uploaded thank you":error)
-   }
-      
-//    const mutation=useMutation({
-//     mutationFn:postComment,
-//     onSuccess:()=>{
-//       setReply("")
-//       // alert("Comment added successfully!");
-//       queryClient.invalidateQueries(["Comments",ticketId])
+            'Content-Type': 'form-data',
+             },
+          body: JSON.stringify({ file_name,file_type,file_size }),
+        }
+      )
+      if(!res.ok){
+        throw new Error("failed  upload for getting the URL")
+      }
+      return await res.json();
+    
+    },
+      onSuccess:(data)=>{
+      if(data.success){
+         console.log(data.data)
+         const url=data.data
+         postUrl(url)
+         
+      }
+    },
+    onError:(error)=>{
+      alert(`${error.message}`)
+    } 
+  })
 
-//     },
-//     onError:(err)=>{
-//       alert(err.message)
-//     } })
-//    const handleSubmit=(e)=>{
-//     e.preventDefault()
-//     if(!reply.trim()){
-//       alert("Please enter a valid comment");
-//       return;
-//     }
-//     mutation.mutate({comment:reply})
-//    }   
+  const postUrl=async(url:string)=>{
+    //  e.preventDefault();
+    console.log(url)
+    const res=await fetch(url,{
+      method: "PUT",
+          body: file,
+    })
+         
+    if(!res.ok){
+      const errorData=await res.json()
+      throw new Error(errorData.message)
+    }
+    return res.json()
+  }
+    
+//  const mutation=useMutation({
+//   mutationFn:postURL,
+//   onSuccess:()=>{
+//     setFile("")
+       
+//   },
+//   onError:(err)=>{
+//     alert(err.message)
+//   } })
+
+const handleSubmit=(event:React.FormEvent)=>{
+  event.preventDefault()
+  if(file){
+    mutate()
+  }else{
+    alert("insert the file")
+  }
+}
+
 
   return (
     <div>
@@ -81,10 +95,10 @@ const token = localStorage.getItem('accessToken')
        
          
           <form  style={{ textAlign: "center", marginTop: "50px" }} onSubmit={handleSubmit}>
-            {/* <textarea value={reply} onChange={(e)=>setReply(e.target.value)}></textarea> */}
-            <input type='file'   onChange={(e)=>setFile(e.target.files[0])}></input>
-            <button type='submit' disabled={!(file)}>upload file</button>
-            {status ? <h1>{status}</h1>:null}
+           
+            <input type='file'  onChange={(e)=>setFile(e.target.files[0])}></input>
+            <button type='submit'>upload file</button>
+            
             </form>
           
         </>
@@ -92,4 +106,5 @@ const token = localStorage.getItem('accessToken')
     </div>
   )
 }
+
 
